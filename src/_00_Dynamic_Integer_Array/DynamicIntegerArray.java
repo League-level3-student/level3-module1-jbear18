@@ -22,15 +22,17 @@ private int []intarray;
 		//   copy every element from the member array 
 		//   to the new array
 		for (int i = 0; i < intarray.length; i++) {
+			longerintarray [i]= intarray [i];
 			
 		}
+		intarray = longerintarray;
 		//D. set the member array equal to the new array.
 	}
-	
+
 	//4. Complete the steps in the get method
 	public int get(int location) {
 		//A. Return the value of the member array at the location passed in
-		return 0;
+		return intarray[location];
 	}
 	
 	//5. Run the DynamicArrayTest to see if you are correct so far.
