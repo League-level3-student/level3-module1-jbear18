@@ -16,7 +16,8 @@ public class _05_LongChipCompetition {
 
 	public static void main(String[] args) {
 		_05_LongChipCompetition lcc = new _05_LongChipCompetition();
-		
+		lcc.initializeBeatles();
+		lcc.theBeatles.
 	}
 	
 	private void initializeBeatles() {
