@@ -13,13 +13,26 @@ public class _05_LongChipCompetition {
 	 * initialize The Beatles before you start your search. *
 	 **/
 	private ArrayList<Beatle> theBeatles = new ArrayList<Beatle>();
+	double longestchip = 0;
+	Beatle beatle;
 
-	public static void main(String[] args) {
-		_05_LongChipCompetition lcc = new _05_LongChipCompetition();
-		lcc.initializeBeatles();
-		lcc.theBeatles.
+	public void runner() {
+		initializeBeatles();
+		for (int i = 0; i < theBeatles.size(); i++) {
+			ArrayList<Chip> chips = theBeatles.get(i).getChips();
+			for (int j = 0; j < chips.size(); j++) {
+				Chip onechip = chips.get(j);
+				double onechiplength = onechip.getLength();
+				if (onechiplength > longestchip) {
+					longestchip = onechiplength;
+					beatle = theBeatles.get(i);
+				}
+			}
+
+		}
+JOptionPane.showMessageDialog(null, "The Beatle with the longest chip is " + beatle.getName()+ " and his chip was " + longestchip+ " long!");
 	}
-	
+
 	private void initializeBeatles() {
 		Beatle george = new Beatle("George");
 		Beatle john = new Beatle("John");
@@ -30,8 +43,8 @@ public class _05_LongChipCompetition {
 		theBeatles.add(paul);
 		theBeatles.add(ringo);
 	}
-	
-	public ArrayList<Beatle> getTheBand(){
+
+	public ArrayList<Beatle> getTheBand() {
 		return theBeatles;
 	}
 }
