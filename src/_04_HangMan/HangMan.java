@@ -17,6 +17,10 @@ public class HangMan implements KeyListener {
 	JLabel label = new JLabel();
 	Stack<String> wordStack = new Stack<String>();
 	int lives = 6;
+	char character;
+	String word;
+	String underscores = "";
+	String lettersFound = "";
 
 //	Step 1: When the program starts, it will ask the user for a number (up to the total words in the file). Then the 
 //    program will read that many words from the "dictionary.txt" file and push them to a Stack. 
@@ -37,12 +41,11 @@ public class HangMan implements KeyListener {
 		String ans = JOptionPane.showInputDialog("How many words would you like to guess?");
 		int numOfWords = Integer.parseInt(ans);
 		for (int i = 0; i < numOfWords; i++) {
-		String randomWord=Utilities.readRandomLineFromFile("dictionary.txt");
-				if(!wordStack.contains(randomWord)){
-				wordStack.push(randomWord);	
+			String randomWord = Utilities.readRandomLineFromFile("dictionary.txt");
+			if (!wordStack.contains(randomWord)) {
+				wordStack.push(randomWord);
 			}
-	
-			
+
 		}
 		poppingOffWord();
 	}
@@ -50,23 +53,55 @@ public class HangMan implements KeyListener {
 //Step 2: Pop the word off the top of the stack and use a JLabel to display a blank line for all the characters in the word. 
 //    Collect key inputs from the user. If the user guesses a letter, fill in the blank space. Otherwise, take off a life.
 
-public void poppingOffWord() {
-	String word= wordStack.pop();
-	String underscores= "";
+	public void poppingOffWord() {
+		word = wordStack.pop();
+		lettersFound = "";
+		JLabel charactersWordLabel = new JLabel();
+		charactersWordLabel.setText(underscores);
 //	System.out.println(word);
-for (int i = 0; i < word.length(); i++) {
-	underscores += " _ ";
+		for (int i = 0; i < word.length(); i++) {
+			underscores += " _ ";
+			lettersFound += "_";
+		}
 
-}
-label.setText(underscores);
-frame.pack();
-		
+		label.setText(underscores);
+		frame.pack();
+
+//if(character==letter) {
+//	underscores +-;
 	}
+
+	public void hangmanGame() {
+		String newLabelText = "";
+		String newLettersFound= "";
+		for (int i = 0; i < word.length(); i++) {
+			if(lettersFound.charAt(i)=='_') {
+				if (word.charAt(i) == character) {
+					newLabelText += " ";
+					newLabelText+= character;
+					newLettersFound+= character;
+				}else {
+					newLabelText+= " _";
+					newLettersFound+= "_";
+				}
+			}
+		}
+		}
+			
+
+
+//	}
 //Step 3: When a word has been solved, pop the next one off the stack and start a new round. It is up to you if you want to 
 //    reset the lives. RESET LIVES
-//if() {
-//	lives=6;
-//}
+	public void solvedWord() {
+		if (word.equals(word)) {
+			wordStack.pop();
+			lives = 6;
+		} else if (lives == 0) {
+			playAgain();
+		}
+	}
+
 //
 //Step 4: If they run out of lives, give them a game over message.
 //
@@ -76,11 +111,10 @@ frame.pack();
 			String ans = JOptionPane
 					.showInputDialog("Would you like to play again? Type yes to play again and no to end");
 			if (ans == "yes") {
-				int lives = 6;
-				// hangman.restart;
-				// play with new words
+				solvedWord();
+
 			} else if (ans == "no") {
-				// hangman.exitonclose;
+				frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 			}
 		}
 	}
@@ -98,7 +132,7 @@ frame.pack();
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-char character= e.getKeyChar();
+		character = e.getKeyChar();
 	}
 
 	@Override
