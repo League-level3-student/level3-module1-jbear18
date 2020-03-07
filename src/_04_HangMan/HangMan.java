@@ -55,13 +55,13 @@ public class HangMan implements KeyListener {
 
 	public void poppingOffWord() {
 		word = wordStack.pop();
-		lettersFound = "";
 		JLabel charactersWordLabel = new JLabel();
 		charactersWordLabel.setText(underscores);
-//	System.out.println(word);
+	// comment this out later (down below)
+		System.out.println(word);
 		for (int i = 0; i < word.length(); i++) {
-			underscores += " _ ";
-			lettersFound += "_";
+			underscores += "_ ";
+	
 		}
 
 		label.setText(underscores);
@@ -72,21 +72,29 @@ public class HangMan implements KeyListener {
 	}
 
 	public void hangmanGame() {
-		String newLabelText = "";
-		String newLettersFound= "";
 		for (int i = 0; i < word.length(); i++) {
-			if(lettersFound.charAt(i)=='_') {
+			if(character==word.charAt(i)) {
 				if (word.charAt(i) == character) {
-					newLabelText += " ";
-					newLabelText+= character;
-					newLettersFound+= character;
-				}else {
-					newLabelText+= " _";
-					newLettersFound+= "_";
+				String text=label.getText();
+					String first= text.substring(0, i);
+					String last= text.substring(i*2, text.length());
+					label.setText(first + character + last);
 				}
+				else if (character!= word.charAt(i)) {
+					lives--;
+					if (lives == 0) {
+						playAgain();
+					}
+				}
+				
+			
+
+
+				
 			}
 		}
 		}
+	
 			
 
 
@@ -108,12 +116,11 @@ public class HangMan implements KeyListener {
 	public void playAgain() {
 		if (lives == 0) {
 			JOptionPane.showMessageDialog(null, "GAME OVER");
-			String ans = JOptionPane
-					.showInputDialog("Would you like to play again? Type yes to play again and no to end");
-			if (ans == "yes") {
+			String ans = JOptionPane.showInputDialog("Would you like to play again? Type yes to play again with new lives or no to exit.");
+			if (ans == "yes" || ans== "Yes") {
 				solvedWord();
 
-			} else if (ans == "no") {
+			} else if (ans == "no" ||  ans== "No") {
 				frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 			}
 		}
@@ -133,6 +140,7 @@ public class HangMan implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		character = e.getKeyChar();
+		hangmanGame();
 	}
 
 	@Override
