@@ -21,6 +21,7 @@ public class HangMan implements KeyListener {
 	String word;
 	String underscores = "";
 	String lettersFound = "";
+	String randomWord;
 
 //	Step 1: When the program starts, it will ask the user for a number (up to the total words in the file). Then the 
 //    program will read that many words from the "dictionary.txt" file and push them to a Stack. 
@@ -33,15 +34,11 @@ public class HangMan implements KeyListener {
 	}
 
 	public void setup() {
-		frame.add(panel);
-		frame.addKeyListener(this);
-		panel.add(label);
-		frame.setVisible(true);
-		frame.pack();
+
 		String ans = JOptionPane.showInputDialog("How many words would you like to guess?");
 		int numOfWords = Integer.parseInt(ans);
 		for (int i = 0; i < numOfWords; i++) {
-			String randomWord = Utilities.readRandomLineFromFile("dictionary.txt");
+			randomWord = Utilities.readRandomLineFromFile("dictionary.txt");
 			if (!wordStack.contains(randomWord)) {
 				wordStack.push(randomWord);
 			}
@@ -54,61 +51,69 @@ public class HangMan implements KeyListener {
 //    Collect key inputs from the user. If the user guesses a letter, fill in the blank space. Otherwise, take off a life.
 
 	public void poppingOffWord() {
-		word = wordStack.pop();
-		JLabel charactersWordLabel = new JLabel();
-		charactersWordLabel.setText(underscores);
-	// comment this out later (down below)
+		frame.add(panel);
+		frame.addKeyListener(this);
+		panel.add(label);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		if(!wordStack.isEmpty()) {
+			word = wordStack.pop();
+		
+
+//		JLabel charactersWordLabel = new JLabel();
+		underscores = "";
+		// comment this out later (down below)
 		System.out.println(word);
 		for (int i = 0; i < word.length(); i++) {
 			underscores += "_ ";
-	
 		}
+//		charactersWordLabel.setText(underscores);
 
 		label.setText(underscores);
 		frame.pack();
-
+		}else {
+			JOptionPane.showMessageDialog(null, "There are no words on the stack");
+		}
 //if(character==letter) {
 //	underscores +-;
 	}
 
 	public void hangmanGame() {
+		boolean foundLetter = false;
 		for (int i = 0; i < word.length(); i++) {
-			if(character==word.charAt(i)) {
-				if (word.charAt(i) == character) {
-				String text=label.getText();
-					String first= text.substring(0, i);
-					String last= text.substring(i*2, text.length());
-					label.setText(first + character + last);
-				}
-				else if (character!= word.charAt(i)) {
-					lives--;
-					if (lives == 0) {
-						playAgain();
-					}
-				}
-				
-			
 
+			if (word.charAt(i) == character) {
 
-				
+				String text = label.getText();
+				String first = text.substring(0, i * 2);
+				String last = text.substring((i + 1) * 2, text.length());
+				label.setText(first + character + " " + last);
+				foundLetter = true;
+
+			}
+				if (label.getText()!=underscores) {
+					poppingOffWord();
+					lives=6;
+				}
+
+		}
+		if (!foundLetter) {
+			lives--;
+			if (lives == 0) {
+				playAgain();
 			}
 		}
-		}
-	
-			
-
+	}
 
 //	}
 //Step 3: When a word has been solved, pop the next one off the stack and start a new round. It is up to you if you want to 
 //    reset the lives. RESET LIVES
-	public void solvedWord() {
-		if (word.equals(word)) {
-			wordStack.pop();
-			lives = 6;
-		} else if (lives == 0) {
-			playAgain();
-		}
-	}
+//	public void solvedWord() {
+//wordStack.pop();
+////			if (!wordStack.contains(randomWord)) {
+////				wordStack.push(randomWord);
+////			}
+//		}
 
 //
 //Step 4: If they run out of lives, give them a game over message.
@@ -116,12 +121,15 @@ public class HangMan implements KeyListener {
 	public void playAgain() {
 		if (lives == 0) {
 			JOptionPane.showMessageDialog(null, "GAME OVER");
-			String ans = JOptionPane.showInputDialog("Would you like to play again? Type yes to play again with new lives or no to exit.");
-			if (ans == "yes" || ans== "Yes") {
-				solvedWord();
+			String ans = JOptionPane.showInputDialog(
+					"Would you like to play again? Type yes to play again with new lives or no to exit.");
+			if (ans == "yes") {
+				frame.dispose();
+				poppingOffWord();
 
-			} else if (ans == "no" ||  ans== "No") {
-				frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+			}
+			if (ans == "no") {
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			}
 		}
 	}
