@@ -12,11 +12,12 @@ import javax.swing.JPanel;
 import _03_IntroToStacks._02_TextUndoRedo;
 
 public class HangMan implements KeyListener {
+	static final int MAX_LIVES = 6;
 	JFrame frame = new JFrame("Hangman");
 	JPanel panel = new JPanel();
 	JLabel label = new JLabel();
 	Stack<String> wordStack = new Stack<String>();
-	int lives = 6;
+	int lives = MAX_LIVES;
 	char character;
 	String word;
 	String underscores = "";
@@ -34,7 +35,7 @@ public class HangMan implements KeyListener {
 	}
 
 	public void setup() {
-
+lives=MAX_LIVES;
 		String ans = JOptionPane.showInputDialog("How many words would you like to guess?");
 		int numOfWords = Integer.parseInt(ans);
 		for (int i = 0; i < numOfWords; i++) {
@@ -56,23 +57,22 @@ public class HangMan implements KeyListener {
 		panel.add(label);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		if(!wordStack.isEmpty()) {
+		if (!wordStack.isEmpty()) {
 			word = wordStack.pop();
-		
 
 //		JLabel charactersWordLabel = new JLabel();
-		underscores = "";
-		// comment this out later (down below)
-		System.out.println(word);
-		for (int i = 0; i < word.length(); i++) {
-			underscores += "_ ";
-		}
+			underscores = "";
+			// comment this out later (down below)
+			System.out.println(word);
+			for (int i = 0; i < word.length(); i++) {
+				underscores += "_ ";
+			}
 //		charactersWordLabel.setText(underscores);
 
-		label.setText(underscores);
-		frame.pack();
-		}else {
-			JOptionPane.showMessageDialog(null, "There are no words on the stack");
+			label.setText(underscores);
+			frame.pack();
+		} else {
+			playAgain();
 		}
 //if(character==letter) {
 //	underscores +-;
@@ -91,10 +91,10 @@ public class HangMan implements KeyListener {
 				foundLetter = true;
 
 			}
-				if (label.getText()!=underscores) {
-					poppingOffWord();
-					lives=6;
-				}
+			if (!label.getText().contains("_")) {
+				poppingOffWord();
+				lives = MAX_LIVES;
+			}
 
 		}
 		if (!foundLetter) {
@@ -119,17 +119,16 @@ public class HangMan implements KeyListener {
 //Step 4: If they run out of lives, give them a game over message.
 //
 	public void playAgain() {
-		if (lives == 0) {
-			JOptionPane.showMessageDialog(null, "GAME OVER");
+		if (lives == 0 || wordStack.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "GAME OVER. You have "+ lives+" lives left");
 			String ans = JOptionPane.showInputDialog(
 					"Would you like to play again? Type yes to play again with new lives or no to exit.");
-			if (ans == "yes") {
+			if (ans.equalsIgnoreCase("yes")) {
 				frame.dispose();
-				poppingOffWord();
+				setup();
 
-			}
-			if (ans == "no") {
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			} else if (ans.equalsIgnoreCase("no")) {
+				System.exit(0);
 			}
 		}
 	}

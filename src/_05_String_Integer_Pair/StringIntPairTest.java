@@ -52,6 +52,9 @@ class StringIntPairTest {
 		int[] values = sip.getValues();
 		String[] keys = sip.getKeys();
 		
+//		int nKeyLen = sip.get("ONE");
+		
+		
 		assertEquals("ONE", keys[0]);
 		assertEquals("TWO", keys[1]);
 		assertEquals("THREE", keys[2]);

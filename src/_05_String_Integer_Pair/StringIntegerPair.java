@@ -17,9 +17,9 @@ public class StringIntegerPair {
 		//   the passed in String, set the value at that location to the
 		//   passed in value and return from the method.
 		for (int i = 0; i < keys.length; i++) {
-//			if() {
-//				
-//			}
+			if(keys[i].equals(key)) {
+				i=value;
+			}
 		}
 		//B. create a String array that is one element longer than the keys
 		String[]longerKeys= new String[keys.length+1];
@@ -44,7 +44,11 @@ public class StringIntegerPair {
 	//5. Complete the method so it returns the value located at the passed in key.
 	//   If the key does not exist, return Integer.MIN_VALUE.
 	public int get(String key) {
-		return 0;
+		if(key.equals(null)) {
+			return Integer.MIN_VALUE;
+		}
+return 0;
+	
 	}
 	
 	//6. Complete the containsKey method so that it returns true if the
