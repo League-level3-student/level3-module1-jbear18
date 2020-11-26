@@ -63,7 +63,7 @@ lives=MAX_LIVES;
 //		JLabel charactersWordLabel = new JLabel();
 			underscores = "";
 			// comment this out later (down below)
-			System.out.println(word);
+//			System.out.println(word);
 			for (int i = 0; i < word.length(); i++) {
 				underscores += "_ ";
 			}
